@@ -20,6 +20,15 @@ abstract class Aware extends Model implements MessageProviderInterface
 
     protected $errorBag;
 
+
+    /**
+    * Validator object
+    *
+    * @var Illuminate\Support\Facades\Validator
+    */
+
+    protected $validator;
+
     /**
     * Aware Validation Messages
     *
@@ -47,6 +56,20 @@ abstract class Aware extends Model implements MessageProviderInterface
         }
 
         return $this->errorBag;
+    }
+
+    /**
+    * Returns the validator object
+    *
+    * @return Illuminate\Support\Facades\Validator
+    */
+    public function getValidator()
+    {
+        if (!$this->validator) {
+            $this->validator = new Validator();
+        }
+
+        return $this->validator;
     }
 
     /**
@@ -103,12 +126,12 @@ abstract class Aware extends Model implements MessageProviderInterface
         list($data, $rules, $messages) = $this->getValidationInfo($rulesOverride);
 
         if ($rules) {
-            $validator = Validator::make($data, $rules, $messages);
-            $valid = $validator->passes();
+            $this->validator = Validator::make($data, $rules, $messages);
+            $valid = $this->validator->passes();
         }
 
         if (!$valid) {
-            $this->errorBag = $validator->errors();
+            $this->errorBag = $this->validator->errors();
         } elseif ($this->errorBag && $this->errorBag->any()) {
             $this->errorBag = new MessageBag();
         }
