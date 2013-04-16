@@ -9,13 +9,13 @@ class AwareModelTest extends PHPUnit_Framework_TestCase
         m::close();
     }
 
-    function testgetErrorsMethod()
+    function testGetErrorsMethod()
     {
         $model = m::mock('\Awareness\Aware[]');
         $this->assertInstanceOf('\Illuminate\Support\MessageBag', $model->getErrors());
     }
 
-    function testgetValidationMethod()
+    function testGetValidationMethod()
     {
         $model = m::mock('\Awareness\Aware[]');
         $this->assertInstanceOf('\Illuminate\Support\Facades\Validator', $model->getValidator());
